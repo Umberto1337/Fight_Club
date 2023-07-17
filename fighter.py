@@ -4,18 +4,22 @@ class Fighter:
     def __init__(self, name):
         self.name = name
         self.health = 100
-        self.damage = random.randint(5, 15)
-        self.turn = random.choice([True, False])
+        
 
     def attack(self, opponent):
-        if self.turn:
-            print(f"{self.name} атакует {opponent.name} и наносит {self.damage} урона.")
-            opponent.health -= self.damage
+        damage = random.randint(5, 15)
+        if self.is_blocked():
+            damage = damage // 2  # Наносим половину урона при блокировке
+            print('=' * 30)
+            print(f"{self.name} атакует, но {opponent.name} блокирует атаку.\nПоловина урона нанесена: {damage}")
+            print()
         else:
-            print(f"{opponent.name} атакует {self.name} и наносит {opponent.damage} урона.")
-            self.health -= opponent.damage
-
-        self.turn = not self.turn
+            print('=' * 30)
+            print(f"{self.name} атакует {opponent.name} и наносит {damage} урона.")
+        opponent.health -= damage
+        
+    def is_blocked(self):
+        return random.random() < 0.3 # 30% шанс блокировки
 
     def is_alive(self):
         return self.health > 0
